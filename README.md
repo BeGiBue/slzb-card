@@ -75,3 +75,11 @@ zwave_restart_entity: button.slzb_mrw10u_z_wave_neustart
 ## Hinweis
 
 Unabhängiges Community-Projekt, nicht mit SMLIGHT oder Home Assistant verbunden. Das Gerätebild zeigt den SLZB-MRW10U; die Marke und das Produkt gehören ihren jeweiligen Rechteinhabern.
+
+## Lizenz
+
+GNU Affero General Public License v3.0 only (**AGPL-3.0-only**).
+
+Nutzung, Änderungen und Weitergabe sind unter den Bedingungen der AGPL erlaubt; abgeleitete Werke müssen unter derselben Lizenz stehen. Bei modifizierten Versionen, die über ein Netzwerk genutzt werden, muss der entsprechende Quellcode den Nutzern zugänglich gemacht werden.
+
+Den vollständigen Lizenztext enthält die Datei [`LICENSE`](LICENSE).
