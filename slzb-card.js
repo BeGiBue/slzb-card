@@ -5,7 +5,7 @@
  * der Code ist komplett eigenständig geschrieben.
  */
 
-const SLZB_VERSION = "1.0.0";
+const SLZB_VERSION = "1.0.1";
 
 const SLZB_DEFAULTS = {
   title: "SLZB-MRW10U",
@@ -140,11 +140,12 @@ class SlzbCard extends HTMLElement {
   }
 
   getCardSize() {
-    return 9;
+    return 10;
   }
 
   getGridOptions() {
-    return { columns: 12, min_columns: 6 };
+    // Feste Höhe: 8 Zeilen (8 x 56 px + 7 x 8 px Abstand = 504 px), nur die Breite ist änderbar
+    return { columns: 12, min_columns: 6, rows: 8, min_rows: 8, max_rows: 8 };
   }
 
   connectedCallback() {
@@ -374,6 +375,9 @@ class SlzbCard extends HTMLElement {
         color: var(--primary-text-color);
         position: relative;
         isolation: isolate;
+        box-sizing: border-box;
+        height: 500px;          /* feste Kartenhöhe = 8 Zeilen im Sections-Dashboard */
+        overflow: hidden;
       }
       .main > :not(.bgimg) { position: relative; z-index: 1; }
       button {
@@ -389,8 +393,7 @@ class SlzbCard extends HTMLElement {
       }
 
       /* Kopf */
-      .top { display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; gap: 12px; min-height: 72px; }
-      .top.inline { min-height: 0; }
+      .top { display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; gap: 12px; height: 72px; }
       .top.inline { grid-template-columns: minmax(0, 1fr) auto; }
       .title { display: flex; align-items: center; gap: 12px; min-width: 0; }
       .bigchip {
@@ -414,7 +417,7 @@ class SlzbCard extends HTMLElement {
         filter: drop-shadow(0 0 1.5px color-mix(in srgb, var(--primary-text-color, #888) 55%, transparent))
                 drop-shadow(0 6px 8px rgba(0, 0, 0, .22));
       }
-      .art img { max-height: 150px; }
+      .art img { max-height: 72px; }
       /* Hintergrundbild oben rechts, zum Rand hin ausgeblendet (wie in der NAS-Card) */
       .bgimg {
         position: absolute; top: 6px; right: 8px; width: 50%;
@@ -425,10 +428,9 @@ class SlzbCard extends HTMLElement {
 
       /* Kacheln */
       .tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-      @container (min-width: 560px) { .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
       .tile, .fwmain {
         display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 10px;
-        min-height: 60px; padding: 10px 12px;
+        box-sizing: border-box; height: 63px; overflow: hidden; padding: 8px 12px;
         border-radius: 16px; background: var(--fill); border: 1px solid var(--line);
         -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
         transition: background .15s;
@@ -451,16 +453,15 @@ class SlzbCard extends HTMLElement {
       .bad.tile .val { color: var(--bad); }
 
       /* Abschnitt */
-      .sec { display: flex; align-items: center; gap: 8px; margin-top: 4px; color: var(--secondary-text-color); font-size: .85em; font-weight: 600; letter-spacing: .03em; --mdc-icon-size: 18px; }
+      .sec { display: flex; align-items: center; gap: 8px; height: 20px; color: var(--secondary-text-color); font-size: .85em; font-weight: 600; letter-spacing: .03em; --mdc-icon-size: 18px; }
       .sec::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 
       /* Firmware-Zeilen */
       .fws { display: grid; grid-template-columns: 1fr; gap: 8px; }
-      @container (min-width: 760px) { .fws { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
       .fw { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
       .restart {
         display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-        min-width: 84px; padding: 8px 10px; border-radius: 16px;
+        box-sizing: border-box; height: 63px; min-width: 84px; padding: 8px 10px; border-radius: 16px;
         background: var(--fill); border: 1px solid var(--line);
         color: var(--secondary-text-color); --mdc-icon-size: 20px;
         transition: background .15s, color .15s, border-color .15s;

@@ -67,6 +67,10 @@ zwave_restart_entity: button.slzb_mrw10u_z_wave_neustart
 | `image_url` | leer | Eigenes Bild, z. B. `/local/images/slzb.png` (leer = eingebettetes Bild) |
 | `confirm_actions` | `true` | Neustart erst nach zweitem Tippen auslösen |
 
+## Größe
+
+Die Karte hat eine feste Höhe von 500 px. Im Sections-Dashboard entspricht das genau 8 Zeilen, nur die Breite (6 bis 12 Spalten) lässt sich ändern. Die Höhe bleibt gleich, egal ob ein Update verfügbar ist, ein Wert fehlt oder die Karte breiter oder schmaler wird.
+
 ## Bedienung
 
 - Tippen auf eine Kachel oder Firmware-Zeile öffnet die Detailansicht der Entität.
