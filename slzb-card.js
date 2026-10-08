@@ -5,7 +5,7 @@
  * der Code ist komplett eigenständig geschrieben.
  */
 
-const SLZB_VERSION = "1.0.2";
+const SLZB_VERSION = "1.0.3";
 
 const SLZB_DEFAULTS = {
   title: "SLZB-MRW10U",
@@ -222,26 +222,20 @@ class SlzbCard extends HTMLElement {
     const btn = this._state(btnId);
     let tone = "off";
     let status = "nicht gefunden";
-    let sub = "";
     if (up) {
       const a = up.attributes || {};
-      const inst = a.installed_version;
-      const latest = a.latest_version;
       if (up.state === "unavailable" || up.state === "unknown") {
         tone = "warn";
         status = "nicht verfügbar";
       } else if (a.in_progress) {
         tone = "warn";
         status = a.update_percentage != null ? `Installiert ${Math.round(a.update_percentage)} %` : "Installiert …";
-        sub = latest ? `→ ${latest}` : "";
       } else if (up.state === "on") {
         tone = "warn";
         status = "Update verfügbar";
-        sub = inst && latest ? `${inst} → ${latest}` : latest || "";
       } else {
         tone = "ok";
         status = "Aktuell";
-        sub = inst || "";
       }
     }
     const disabled = !btn || btn.state === "unavailable" ? "disabled" : "";
@@ -252,7 +246,6 @@ class SlzbCard extends HTMLElement {
           <span class="txt">
             <span class="lab">${slzbEsc(label)}</span>
             <span class="val">${slzbEsc(status)}</span>
-            ${sub ? `<span class="sub">${slzbEsc(sub)}</span>` : ""}
           </span>
         </button>
         <button class="restart" data-press="${slzbEsc(btnId)}" ${disabled} title="${slzbEsc(label)} neu starten">
@@ -442,7 +435,6 @@ class SlzbCard extends HTMLElement {
       .txt { display: flex; flex-direction: column; min-width: 0; gap: 1px; line-height: 1.25; }
       .lab { font-size: .75em; color: var(--secondary-text-color); letter-spacing: .02em; }
       .val { font-size: 1em; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-      .sub { font-size: .75em; color: var(--secondary-text-color); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
       .ok   .chip { background: color-mix(in srgb, var(--ok) 20%, transparent);   color: var(--ok); }
       .warn .chip { background: color-mix(in srgb, var(--warn) 22%, transparent); color: var(--warn); }
