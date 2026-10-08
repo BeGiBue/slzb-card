@@ -5,7 +5,7 @@
  * der Code ist komplett eigenständig geschrieben.
  */
 
-const SLZB_VERSION = "1.0.1";
+const SLZB_VERSION = "1.0.3";
 
 const SLZB_DEFAULTS = {
   title: "SLZB-MRW10U",
@@ -144,8 +144,8 @@ class SlzbCard extends HTMLElement {
   }
 
   getGridOptions() {
-    // Feste Höhe: 8 Zeilen (8 x 56 px + 7 x 8 px Abstand = 504 px), nur die Breite ist änderbar
-    return { columns: 12, min_columns: 6, rows: 8, min_rows: 8, max_rows: 8 };
+    // Höhe nicht vorgeben: Home Assistant misst die (feste) Kartenhöhe selbst, so wird nie etwas abgeschnitten
+    return { columns: 12, min_columns: 6 };
   }
 
   connectedCallback() {
@@ -222,26 +222,20 @@ class SlzbCard extends HTMLElement {
     const btn = this._state(btnId);
     let tone = "off";
     let status = "nicht gefunden";
-    let sub = "";
     if (up) {
       const a = up.attributes || {};
-      const inst = a.installed_version;
-      const latest = a.latest_version;
       if (up.state === "unavailable" || up.state === "unknown") {
         tone = "warn";
         status = "nicht verfügbar";
       } else if (a.in_progress) {
         tone = "warn";
         status = a.update_percentage != null ? `Installiert ${Math.round(a.update_percentage)} %` : "Installiert …";
-        sub = latest ? `→ ${latest}` : "";
       } else if (up.state === "on") {
         tone = "warn";
         status = "Update verfügbar";
-        sub = inst && latest ? `${inst} → ${latest}` : latest || "";
       } else {
         tone = "ok";
         status = "Aktuell";
-        sub = inst || "";
       }
     }
     const disabled = !btn || btn.state === "unavailable" ? "disabled" : "";
@@ -252,7 +246,6 @@ class SlzbCard extends HTMLElement {
           <span class="txt">
             <span class="lab">${slzbEsc(label)}</span>
             <span class="val">${slzbEsc(status)}</span>
-            ${sub ? `<span class="sub">${slzbEsc(sub)}</span>` : ""}
           </span>
         </button>
         <button class="restart" data-press="${slzbEsc(btnId)}" ${disabled} title="${slzbEsc(label)} neu starten">
@@ -376,8 +369,7 @@ class SlzbCard extends HTMLElement {
         position: relative;
         isolation: isolate;
         box-sizing: border-box;
-        height: 500px;          /* feste Kartenhöhe = 8 Zeilen im Sections-Dashboard */
-        overflow: hidden;
+        min-height: 500px;      /* feste Kartenhöhe; der Inhalt ist kürzer, es wird nichts abgeschnitten */
       }
       .main > :not(.bgimg) { position: relative; z-index: 1; }
       button {
@@ -430,7 +422,7 @@ class SlzbCard extends HTMLElement {
       .tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
       .tile, .fwmain {
         display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 10px;
-        box-sizing: border-box; height: 63px; overflow: hidden; padding: 8px 12px;
+        box-sizing: border-box; height: 63px; overflow: hidden; padding: 6px 12px;
         border-radius: 16px; background: var(--fill); border: 1px solid var(--line);
         -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
         transition: background .15s;
@@ -440,10 +432,9 @@ class SlzbCard extends HTMLElement {
         width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center;
         background: var(--line); color: var(--secondary-text-color); --mdc-icon-size: 20px;
       }
-      .txt { display: flex; flex-direction: column; min-width: 0; gap: 1px; }
+      .txt { display: flex; flex-direction: column; min-width: 0; gap: 1px; line-height: 1.25; }
       .lab { font-size: .75em; color: var(--secondary-text-color); letter-spacing: .02em; }
       .val { font-size: 1em; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-      .sub { font-size: .75em; color: var(--secondary-text-color); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
       .ok   .chip { background: color-mix(in srgb, var(--ok) 20%, transparent);   color: var(--ok); }
       .warn .chip { background: color-mix(in srgb, var(--warn) 22%, transparent); color: var(--warn); }
