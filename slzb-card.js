@@ -5,7 +5,7 @@
  * der Code ist komplett eigenständig geschrieben.
  */
 
-const SLZB_VERSION = "1.0.3";
+const SLZB_VERSION = "1.0.4";
 
 const SLZB_DEFAULTS = {
   title: "SLZB-MRW10U",
