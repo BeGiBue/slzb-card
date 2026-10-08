@@ -69,7 +69,7 @@ zwave_restart_entity: button.slzb_mrw10u_z_wave_neustart
 
 ## Größe
 
-Die Karte hat eine feste Höhe von 500 px. Im Sections-Dashboard entspricht das genau 8 Zeilen, nur die Breite (6 bis 12 Spalten) lässt sich ändern. Die Höhe bleibt gleich, egal ob ein Update verfügbar ist, ein Wert fehlt oder die Karte breiter oder schmaler wird.
+Die Karte hat eine feste Höhe von 500 px. Die Höhe bleibt gleich, egal ob ein Update verfügbar ist, ein Wert fehlt oder die Karte breiter oder schmaler wird. Im Sections-Dashboard ist die Breite von 6 bis 12 Spalten einstellbar, die Höhe misst Home Assistant selbst.
 
 ## Bedienung
 

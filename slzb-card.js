@@ -5,7 +5,7 @@
  * der Code ist komplett eigenständig geschrieben.
  */
 
-const SLZB_VERSION = "1.0.1";
+const SLZB_VERSION = "1.0.2";
 
 const SLZB_DEFAULTS = {
   title: "SLZB-MRW10U",
@@ -144,8 +144,8 @@ class SlzbCard extends HTMLElement {
   }
 
   getGridOptions() {
-    // Feste Höhe: 8 Zeilen (8 x 56 px + 7 x 8 px Abstand = 504 px), nur die Breite ist änderbar
-    return { columns: 12, min_columns: 6, rows: 8, min_rows: 8, max_rows: 8 };
+    // Höhe nicht vorgeben: Home Assistant misst die (feste) Kartenhöhe selbst, so wird nie etwas abgeschnitten
+    return { columns: 12, min_columns: 6 };
   }
 
   connectedCallback() {
@@ -376,8 +376,7 @@ class SlzbCard extends HTMLElement {
         position: relative;
         isolation: isolate;
         box-sizing: border-box;
-        height: 500px;          /* feste Kartenhöhe = 8 Zeilen im Sections-Dashboard */
-        overflow: hidden;
+        min-height: 500px;      /* feste Kartenhöhe; der Inhalt ist kürzer, es wird nichts abgeschnitten */
       }
       .main > :not(.bgimg) { position: relative; z-index: 1; }
       button {
@@ -430,7 +429,7 @@ class SlzbCard extends HTMLElement {
       .tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
       .tile, .fwmain {
         display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 10px;
-        box-sizing: border-box; height: 63px; overflow: hidden; padding: 8px 12px;
+        box-sizing: border-box; height: 63px; overflow: hidden; padding: 6px 12px;
         border-radius: 16px; background: var(--fill); border: 1px solid var(--line);
         -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
         transition: background .15s;
@@ -440,7 +439,7 @@ class SlzbCard extends HTMLElement {
         width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center;
         background: var(--line); color: var(--secondary-text-color); --mdc-icon-size: 20px;
       }
-      .txt { display: flex; flex-direction: column; min-width: 0; gap: 1px; }
+      .txt { display: flex; flex-direction: column; min-width: 0; gap: 1px; line-height: 1.25; }
       .lab { font-size: .75em; color: var(--secondary-text-color); letter-spacing: .02em; }
       .val { font-size: 1em; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
       .sub { font-size: .75em; color: var(--secondary-text-color); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
